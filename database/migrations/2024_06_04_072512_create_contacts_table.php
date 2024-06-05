@@ -12,7 +12,26 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('contacts', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary();
+
+            $table->json('name');
+            $table->string('gender')->nullable();
+            $table->string('email')->nullable();
+            $table->json('socials')->nullable();
+            $table
+                ->foreignUlid('user_id')
+                ->index()
+                ->constrained('users')
+                ->cascadeOnDelete();
+
+
+            $table
+                ->foreignUlid('company_id')
+                ->index()
+                ->nullable();
+
+            $table->date('birthday')->nullable();
+
             $table->timestamps();
         });
     }
